@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Server"
-            android:id="@+id/textView3"
+            android:id="@+id/serverTextView"
             android:textColor="@color/abc_primary_text_material_light" />
 
         <TableRow
@@ -28,7 +28,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Address"
-                android:id="@+id/textView"
+                android:id="@+id/addressTextView"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1" />
 
@@ -51,7 +51,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Name"
-                android:id="@+id/textView2"
+                android:id="@+id/nameTextView"
                 android:singleLine="false"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1" />
@@ -69,7 +69,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Authentication"
-            android:id="@+id/textView4"
+            android:id="@+id/authTextView"
             android:textColor="@color/abc_primary_text_material_light" />
 
         <TableRow
@@ -82,7 +82,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Key Based Authentication"
-                android:id="@+id/textView5"
+                android:id="@+id/keyAuthTextView"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1" />
 
