@@ -5,5 +5,11 @@
         <item name="android:colorPrimaryDark">#5A9139</item>
         <item name="android:textColorPrimary">@color/primary_text_default_material_dark</item>
         <item name="android:navigationBarColor">#5A9139</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+    </style>
+
+    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@android:color/white</item>
     </style>
 </resources>

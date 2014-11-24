@@ -18,6 +18,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.ratusapparatus.passssh.PassSSH;
+
 import junit.framework.Assert;
 
 
@@ -33,6 +35,8 @@ public class PassUI extends Activity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+
+    private PassSSH passSSH = new PassSSH();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
