@@ -1,6 +1,8 @@
 package com.ratusapparatus.passui;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -18,6 +20,16 @@ public class Passwords extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
+        FragmentManager fragmentManager = getActivity().getFragmentManager();
+
+        Password fragment = new Password();
+        Password fragment2 = new Password();
+        Password fragment3 = new Password();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.scrollLayout, fragment);
+        fragmentTransaction.add(R.id.scrollLayout, fragment2);
+        fragmentTransaction.add(R.id.scrollLayout, fragment3);
+        fragmentTransaction.commit();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_passwords, container, false);
     }
