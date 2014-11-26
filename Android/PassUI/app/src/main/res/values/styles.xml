@@ -16,5 +16,8 @@
         <item name="color">@android:color/white</item>
     </style>
     <color name="themePrimaryColour">#5A9139</color>
+    <color name="themePrimaryColourDark">#2C471C</color>
     <color name="themeSecondaryColour">#A47336</color>
+    <color name="themeTertiaryColour">#7F3347</color>
+
 </resources>

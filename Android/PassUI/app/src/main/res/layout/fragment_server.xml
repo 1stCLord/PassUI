@@ -1,12 +1,6 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="com.ratusapparatus.passui.Server">
-
-    <!-- TODO: Update blank fragment layout -->
-
-    <TableLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+    <TableLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="match_parent" tools:context="com.ratusapparatus.passui.Server"
         android:layout_gravity="center"
         android:layout_margin="10dp">
 
@@ -16,13 +10,16 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Server"
             android:id="@+id/serverTextView"
-            android:textColor="@color/abc_primary_text_material_light" />
+            android:textColor="@android:color/white"
+            android:background="@color/themeTertiaryColour"
+            android:padding="4dp"/>
 
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:measureWithLargestChild="false"
-            android:baselineAligned="false">
+            android:baselineAligned="false"
+            android:padding="4dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -45,7 +42,8 @@
             android:layout_height="fill_parent"
             android:layout_column="0"
             android:layout_span="2"
-            android:baselineAligned="false">
+            android:baselineAligned="false"
+            android:padding="4dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -70,13 +68,16 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Authentication"
             android:id="@+id/authTextView"
-            android:textColor="@color/abc_primary_text_material_light" />
+            android:textColor="@android:color/white"
+            android:background="@color/themeTertiaryColour"
+            android:padding="4dp"/>
 
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:measureWithLargestChild="false"
-            android:baselineAligned="false">
+            android:baselineAligned="false"
+            android:padding="4dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -94,4 +95,3 @@
         </TableRow>
 
     </TableLayout>
-</FrameLayout>

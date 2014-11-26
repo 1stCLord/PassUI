@@ -31,6 +31,22 @@ JNIEXPORT jobjectArray JNICALL Java_com_ratusapparatus_passssh_PassSSH_GetPassID
 JNIEXPORT jstring JNICALL Java_com_ratusapparatus_passssh_PassSSH_GetPass
   (JNIEnv *, jobject, jstring);
 
+/*
+ * Class:     com_ratusapparatus_passssh_PassSSH
+ * Method:    InsertPass
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_com_ratusapparatus_passssh_PassSSH_InsertPass
+  (JNIEnv *, jobject, jstring, jstring);
+
+/*
+ * Class:     com_ratusapparatus_passssh_PassSSH
+ * Method:    GeneratePass
+ * Signature: (Ljava/lang/String;ZI)V
+ */
+JNIEXPORT void JNICALL Java_com_ratusapparatus_passssh_PassSSH_GeneratePass
+  (JNIEnv *, jobject, jstring, jboolean, jint);
+
 #ifdef __cplusplus
 }
 #endif

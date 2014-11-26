@@ -2,7 +2,7 @@
 <resources>
     <style name="AppTheme" parent="android:Theme.Material.Light">
         <item name="android:colorPrimary">@color/themePrimaryColour</item>
-        <item name="android:colorPrimaryDark">@color/themePrimaryColour</item>
+        <item name="android:colorPrimaryDark">@color/themePrimaryColourDark</item>
         <item name="android:textColorPrimary">@color/primary_text_default_material_dark</item>
         <item name="android:navigationBarColor">@color/themePrimaryColour</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
