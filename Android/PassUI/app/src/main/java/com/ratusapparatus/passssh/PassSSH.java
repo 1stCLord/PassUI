@@ -13,9 +13,17 @@ public class PassSSH
 
     public PassSSH()
     {
+        System.loadLibrary("sslcrypto");
+        System.loadLibrary("ssl");
         System.loadLibrary("passssh");
+        nativeObject = Create();
         Init("server","name","passphrase",AuthType.AUTH_TYPE_PASSWORD);
     }
+    long nativeObject;
+
+    private native long Create();
+
+    private long ptr(){return nativeObject;}
 
     //SSH details to use
     public native boolean Init(String server, String username, String passphrase, AuthType authType);

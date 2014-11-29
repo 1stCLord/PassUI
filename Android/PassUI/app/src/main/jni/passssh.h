@@ -9,6 +9,14 @@ extern "C" {
 #endif
 /*
  * Class:     com_ratusapparatus_passssh_PassSSH
+ * Method:    Create
+ * Signature: ()J
+ */
+JNIEXPORT jlong JNICALL Java_com_ratusapparatus_passssh_PassSSH_Create
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_ratusapparatus_passssh_PassSSH
  * Method:    Init
  * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/ratusapparatus/passssh/PassSSH/AuthType;)Z
  */

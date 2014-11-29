@@ -12,12 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-LOCAL_PATH := $(call my-dir)
+JNIPATH := $(call my-dir)
+LOCAL_PATH := $(JNIPATH)
+
+include $(call all-subdir-makefiles)
+
+LOCAL_PATH := $(JNIPATH)
 
 include $(CLEAR_VARS)
 
 LOCAL_MODULE    := passssh
-LOCAL_SRC_FILES := passssh.cpp
-
-LOCAL_LDLIBS := -llog
+LOCAL_SRC_FILES := passssh.cpp passssh_native.cpp
+LOCAL_STATIC_LIBRARIES := ssh2
+LOCAL_LDLIBS := -llog -lz
 include $(BUILD_SHARED_LIBRARY)

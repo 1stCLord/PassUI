@@ -1,54 +1,70 @@
 #include "passssh.h"
+#include "passssh_native.h"
 #include "passsshlog.h"
+#include <cstdint>
 
-class PassSSH
+template<typename T>
+T *ptr(JNIEnv *env, jobject obj)
 {
-};
-
-PassSSH passSSH;
-
-JNIEXPORT jboolean JNICALL Java_com_ratusapparatus_passssh_PassSSH_Init(JNIEnv *, jobject, jstring, jstring, jstring, jobject)
-{
-	DPRINTF( "%s\n", __FUNCTION__ );
+  jclass javaClass = env->GetObjectClass(obj);
+  jmethodID methodID = env->GetMethodID(javaClass, "ptr", "()J");
+  if(methodID)
+  {
+	return (T*)(uintptr_t)env->CallLongMethod(obj, methodID);
+  }
+  return NULL;
 }
 
-JNIEXPORT jobjectArray JNICALL Java_com_ratusapparatus_passssh_PassSSH_GetPassIDs(JNIEnv *env, jobject)
+jobjectArray vectorToList(JNIEnv * env, const vector<string> &list)
 {
-	DPRINTF( "%s\n", __FUNCTION__ );
-    const char *data[8]= {
-	"google.com", 
-	"outlook.com", 
-	"paypal.com", 
-	"github.com", 
-	"facebook.com", 
-	"twitter.com", 
-	"youtube.com", 
-	"wordpress.com"};
+	jclass jstringClass = env->FindClass("java/lang/String");
+	jobjectArray jlist = env->NewObjectArray(list.size(),jstringClass, 0); 
 
-    //ret = (jobjectArray)env->NewObjectArray(8,env->FindClass("java/lang/String"),env->NewStringUTF(""));
-	jclass stringClass = env->FindClass("java/lang/String");
-    jobjectArray ret = env->NewObjectArray(8, stringClass, 0);
-
-    for (int i = 0; i < 8; ++i) 
+	for(uint16_t i = 0; i < list.size(); ++i)
 	{
-		env->SetObjectArrayElement(ret, i, env->NewStringUTF(data[i]));
-    }
-	
-    return ret;
+		jstring jvalue = env->NewStringUTF(list[i].c_str());
+		env->SetObjectArrayElement(jlist, i, jvalue);
+	}
+	return jlist;
 }
 
-JNIEXPORT jstring JNICALL Java_com_ratusapparatus_passssh_PassSSH_GetPass(JNIEnv *env, jobject, jstring)
+JNIEXPORT jlong JNICALL Java_com_ratusapparatus_passssh_PassSSH_Create(JNIEnv *, jobject)
 {
 	DPRINTF( "%s\n", __FUNCTION__ );
-	return env->NewStringUTF("pass");
+	return (uintptr_t)new PassSSH();
 }
 
-JNIEXPORT void JNICALL Java_com_ratusapparatus_passssh_PassSSH_InsertPass(JNIEnv *, jobject, jstring, jstring)
+JNIEXPORT jboolean JNICALL Java_com_ratusapparatus_passssh_PassSSH_Init(JNIEnv * env, jobject obj, jstring jserver, jstring jusername, jstring jpassphrase, jobject jauthtype)
 {
 	DPRINTF( "%s\n", __FUNCTION__ );
+	jclass javaClass = env->GetObjectClass(jauthtype);
+	jmethodID authTypeOrdinal = env->GetMethodID(javaClass, "ordinal", "()I");	
+	PassSSH *passSSH = ptr<PassSSH>(env, obj);
+	return passSSH->Init(env->GetStringUTFChars(jserver, JNI_FALSE), env->GetStringUTFChars(jusername, JNI_FALSE), env->GetStringUTFChars(jpassphrase, JNI_FALSE), (AuthType)env->CallIntMethod(jauthtype, authTypeOrdinal));
 }
 
-JNIEXPORT void JNICALL Java_com_ratusapparatus_passssh_PassSSH_GeneratePass(JNIEnv *, jobject, jstring, jboolean, jint)
+JNIEXPORT jobjectArray JNICALL Java_com_ratusapparatus_passssh_PassSSH_GetPassIDs(JNIEnv *env, jobject obj)
 {
 	DPRINTF( "%s\n", __FUNCTION__ );
+	PassSSH *passSSH = ptr<PassSSH>(env, obj);
+	vector<string> passIDs = passSSH->GetPassIDs();
+	return vectorToList(env, passIDs);
+}
+
+JNIEXPORT jstring JNICALL Java_com_ratusapparatus_passssh_PassSSH_GetPass(JNIEnv *env, jobject obj, jstring)
+{
+	DPRINTF( "%s\n", __FUNCTION__ );
+	PassSSH *passSSH = ptr<PassSSH>(env, obj);
+}
+
+JNIEXPORT void JNICALL Java_com_ratusapparatus_passssh_PassSSH_InsertPass(JNIEnv *env, jobject obj, jstring, jstring)
+{
+	DPRINTF( "%s\n", __FUNCTION__ );
+	PassSSH *passSSH = ptr<PassSSH>(env, obj);
+}
+
+JNIEXPORT void JNICALL Java_com_ratusapparatus_passssh_PassSSH_GeneratePass(JNIEnv *env, jobject obj, jstring, jboolean, jint)
+{
+	DPRINTF( "%s\n", __FUNCTION__ );
+	PassSSH *passSSH = ptr<PassSSH>(env, obj);
 }
