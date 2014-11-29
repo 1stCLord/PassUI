@@ -1,5 +1,7 @@
 package com.ratusapparatus.passssh;
 
+import android.app.Dialog;
+
 /**
  * Created by Sombrero on 24/11/2014.
  */

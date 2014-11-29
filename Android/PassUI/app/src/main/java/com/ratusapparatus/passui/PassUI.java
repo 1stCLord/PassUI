@@ -9,6 +9,7 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -65,20 +66,7 @@ public class PassUI extends Activity implements NavigationDrawerFragment.Navigat
                 currentFragment = Server.newInstance();
                 break;
             case 1:
-                String server = "";
-                String username = "";
-                String password = "";
-                if(currentFragment instanceof Server)
-                {
-                    EditText addressEditText = (EditText)currentFragment.getView().findViewById(R.id.addressEditText);
-                    EditText nameEditText = (EditText)currentFragment.getView().findViewById(R.id.nameEditText);
-                    EditText passEditText = (EditText)currentFragment.getView().findViewById(R.id.passEditText);
-                    server = addressEditText.getText().toString();
-                    username = nameEditText.getText().toString();
-                    password = passEditText.getText().toString();
-                }
-
-                passSSH.Init(server,username,password, PassSSH.AuthType.AUTH_TYPE_PASSWORD);
+                ((Server)currentFragment).SaveData();
                 currentFragment = Passwords.newInstance();
                 break;
             default:

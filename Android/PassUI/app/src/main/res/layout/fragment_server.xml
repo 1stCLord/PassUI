@@ -34,7 +34,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/addressEditText"
                 android:inputType="textUri"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:textColor="@color/accent_material_light"/>
         </TableRow>
 
         <TableRow
@@ -59,7 +60,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/nameEditText"
                 android:inputType="text"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:textColor="@color/accent_material_light"/>
         </TableRow>
 
         <TextView
@@ -115,7 +117,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/passEditText"
                 android:inputType="text"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:textColor="@color/accent_material_light"/>
         </TableRow>
 
     </TableLayout>

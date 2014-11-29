@@ -8,6 +8,7 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,10 @@ public class Passwords extends Fragment
         FragmentManager fragmentManager = getActivity().getFragmentManager();
 
         PassUI passUI = (PassUI)getActivity();
+        String server = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("Server", "");
+        String username = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("Name", "");
+        String password = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("Pass", "");
+        passUI.passSSH.Init(server,username,password, PassSSH.AuthType.AUTH_TYPE_PASSWORD);
         String[] passIDs = passUI.passSSH.GetPassIDs();
         //passUI.passSSH.GetPass("");
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
