@@ -4,6 +4,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <netdb.h>
 #include "passsshlog.h"
 
 bool PassSSH::Init(string server, string username, string passphrase, AuthType authType)
@@ -66,7 +67,14 @@ void PassSSH::SessionStart()
  
     sin.sin_family = AF_INET;
     sin.sin_port = htons(m_port);
-    sin.sin_addr.s_addr = inet_addr(m_server.c_str());
+	struct hostent *he = gethostbyname(m_server.c_str());
+    DPRINTF("Official name is: %s\n", he->h_name);
+    DPRINTF("    IP addresses: ");
+    struct in_addr **addr_list = (struct in_addr **)he->h_addr_list;
+    for(int i = 0; addr_list[i] != NULL; i++)
+        DPRINTF("%s ", inet_ntoa(*addr_list[i]));
+    DPRINTF("\n");
+    sin.sin_addr.s_addr = inet_addr(inet_ntoa(*addr_list[0]));
 	DPRINTF("%d\n",sin.sin_addr.s_addr);
     if (connect(sock, (struct sockaddr*)(&sin),sizeof(struct sockaddr_in))) 
 		DPRINTF("failed to connect!\n");
@@ -75,5 +83,11 @@ void PassSSH::SessionStart()
 
     if (libssh2_session_handshake(session, sock))
         DPRINTF("Failure establishing SSH session\n");
+		
+	const char *fingerprint = libssh2_hostkey_hash(session, LIBSSH2_HOSTKEY_HASH_SHA1);
+	DPRINTF("%s\n",fingerprint);
+	char *userauthlist = libssh2_userauth_list(session, m_username.c_str(), m_username.size());
+	DPRINTF("%s\n",userauthlist);
+
 	DPRINTF( "%s end\n", __FUNCTION__ );
 }

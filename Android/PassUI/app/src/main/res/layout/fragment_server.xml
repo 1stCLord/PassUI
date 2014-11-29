@@ -32,7 +32,7 @@
             <EditText
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText"
+                android:id="@+id/addressEditText"
                 android:inputType="textUri"
                 android:layout_weight="1" />
         </TableRow>
@@ -57,7 +57,7 @@
             <EditText
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText2"
+                android:id="@+id/nameEditText"
                 android:inputType="text"
                 android:layout_weight="1" />
         </TableRow>
@@ -92,6 +92,30 @@
                 android:layout_height="wrap_content"
                 android:text="New ToggleButton"
                 android:id="@+id/toggleButton" />
+        </TableRow>
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_column="0"
+            android:layout_span="2"
+            android:baselineAligned="false"
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Password"
+                android:id="@+id/passTextView"
+                android:singleLine="false"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1" />
+
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/passEditText"
+                android:inputType="text"
+                android:layout_weight="1" />
         </TableRow>
 
     </TableLayout>

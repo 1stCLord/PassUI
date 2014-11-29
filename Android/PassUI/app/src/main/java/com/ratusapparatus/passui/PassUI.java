@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.ratusapparatus.passssh.PassSSH;
@@ -46,28 +47,39 @@ public class PassUI extends Activity implements NavigationDrawerFragment.Navigat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pass_ui);
 
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getFragmentManager().findFragmentById(R.id.navigation_drawer);
+        mNavigationDrawerFragment = (NavigationDrawerFragment)getFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
 
         // Set up the drawer.
-        mNavigationDrawerFragment.setUp(
-                R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
+        mNavigationDrawerFragment.setUp(R.id.navigation_drawer,(DrawerLayout) findViewById(R.id.drawer_layout));
     }
 
+    private Fragment currentFragment = null;
     @Override
     public void onNavigationDrawerItemSelected(int position)
     {
         // update the main content by replacing fragments
-        Fragment newFragment = null;
         switch (position)
         {
             case 0:
-                newFragment = Server.newInstance();
+                currentFragment = Server.newInstance();
                 break;
             case 1:
-                newFragment = Passwords.newInstance();
+                String server = "";
+                String username = "";
+                String password = "";
+                if(currentFragment instanceof Server)
+                {
+                    EditText addressEditText = (EditText)currentFragment.getView().findViewById(R.id.addressEditText);
+                    EditText nameEditText = (EditText)currentFragment.getView().findViewById(R.id.nameEditText);
+                    EditText passEditText = (EditText)currentFragment.getView().findViewById(R.id.passEditText);
+                    server = addressEditText.getText().toString();
+                    username = nameEditText.getText().toString();
+                    password = passEditText.getText().toString();
+                }
+
+                passSSH.Init(server,username,password, PassSSH.AuthType.AUTH_TYPE_PASSWORD);
+                currentFragment = Passwords.newInstance();
                 break;
             default:
                 Assert.assertNotNull(null);
@@ -75,10 +87,7 @@ public class PassUI extends Activity implements NavigationDrawerFragment.Navigat
         }
 
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                //.replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-                .replace(R.id.container, newFragment)
-                .commit();
+        fragmentManager.beginTransaction().replace(R.id.container, currentFragment).commit();
     }
 
     public void onSectionAttached(int number)

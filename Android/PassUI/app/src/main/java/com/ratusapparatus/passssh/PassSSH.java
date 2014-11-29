@@ -17,7 +17,6 @@ public class PassSSH
         System.loadLibrary("ssl");
         System.loadLibrary("passssh");
         nativeObject = Create();
-        Init("server","name","passphrase",AuthType.AUTH_TYPE_PASSWORD);
     }
     long nativeObject;
 
