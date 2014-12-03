@@ -64,6 +64,34 @@
                 android:textColor="@color/accent_material_light"/>
         </TableRow>
 
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_column="0"
+            android:layout_span="2"
+            android:baselineAligned="false"
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Port"
+                android:id="@+id/portTextView"
+                android:singleLine="false"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1" />
+
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/portEditText"
+                android:textColor="@color/accent_material_light"
+                android:inputType="numberDecimal"
+                android:maxLength="5"
+                android:text="22"
+                android:gravity="right" />
+        </TableRow>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

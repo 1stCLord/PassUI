@@ -26,12 +26,15 @@ public class Server extends Fragment
         String server = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("Server", "");
         String username = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("Name", "");
         String password = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("Pass", "");
+        String port = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("Port", "");
         EditText addressEditText = (EditText)view.findViewById(R.id.addressEditText);
         EditText nameEditText = (EditText)view.findViewById(R.id.nameEditText);
         EditText passEditText = (EditText)view.findViewById(R.id.passEditText);
+        EditText portEditText = (EditText)view.findViewById(R.id.portEditText);
         addressEditText.setText(server);
         nameEditText.setText(username);
         passEditText.setText(password);
+        portEditText.setText(port);
 
         return view;
    }
@@ -41,12 +44,15 @@ public class Server extends Fragment
         EditText addressEditText = (EditText)getView().findViewById(R.id.addressEditText);
         EditText nameEditText = (EditText)getView().findViewById(R.id.nameEditText);
         EditText passEditText = (EditText)getView().findViewById(R.id.passEditText);
+        EditText portEditText = (EditText)getView().findViewById(R.id.portEditText);
         String server = addressEditText.getText().toString();
         String username = nameEditText.getText().toString();
         String password = passEditText.getText().toString();
+        String port = portEditText.getText().toString();
         PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putString("Server", server).commit();
         PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putString("Name", username).commit();
-        PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putString("Pass", username).commit();
+        PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putString("Pass", password).commit();
+        PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putString("Port", port).commit();
     }
 
 

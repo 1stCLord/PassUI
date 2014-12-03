@@ -32,7 +32,8 @@ public class Passwords extends Fragment
         String server = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("Server", "");
         String username = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("Name", "");
         String password = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("Pass", "");
-        passUI.passSSH.Init(server,username,password, PassSSH.AuthType.AUTH_TYPE_PASSWORD);
+        String port = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("Port", "22");
+        passUI.passSSH.Init(server,Integer.parseInt(port),username,password, PassSSH.AuthType.AUTH_TYPE_PASSWORD);
         String[] passIDs = passUI.passSSH.GetPassIDs();
         //passUI.passSSH.GetPass("");
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

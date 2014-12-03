@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include "sshlib2/include/libssh2.h"
 using namespace std;
 
 enum AuthType
@@ -13,7 +14,7 @@ class PassSSH
 {
 public:
     //SSH details to use
-    bool Init(string server, string username, string passphrase, AuthType authType);
+    bool Init(string server, uint16_t port, string username, wstring passphrase, AuthType authType);
 
     //Fetch
     vector<string> GetPassIDs();
@@ -28,7 +29,14 @@ private:
 	string m_server;
 	uint16_t m_port;
 	string m_username;
-	string m_passphrase;
+	wstring m_passphrase;
+	
+	LIBSSH2_CHANNEL *m_channel;
 	
 	void SessionStart();
+	void ShellStart();
+	vector<string> ReadShell();
+	
+	template<typename T>
+	basic_string<T> password();
 };

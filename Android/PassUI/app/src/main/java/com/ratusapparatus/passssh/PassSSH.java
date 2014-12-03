@@ -27,7 +27,7 @@ public class PassSSH
     private long ptr(){return nativeObject;}
 
     //SSH details to use
-    public native boolean Init(String server, String username, String passphrase, AuthType authType);
+    public native boolean Init(String server, int port, String username, String passphrase, AuthType authType);
 
     //Fetch
     public native String[] GetPassIDs();
