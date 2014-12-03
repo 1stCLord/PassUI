@@ -41,17 +41,7 @@ public class Passwords extends Fragment
         {
             fragmentTransaction.add(R.id.scrollLayout, Password.newInstance(passID));
         }
-        /*Password fragment = new Password();
-        Password fragment2 = new Password();
-        Password fragment3 = new Password();
-        Password fragment4 = new Password();
-        Password fragment5 = new Password();
 
-        fragmentTransaction.add(R.id.scrollLayout, fragment);
-        fragmentTransaction.add(R.id.scrollLayout, fragment2);
-        fragmentTransaction.add(R.id.scrollLayout, fragment3);
-        fragmentTransaction.add(R.id.scrollLayout, fragment4);
-        fragmentTransaction.add(R.id.scrollLayout, fragment5);*/
         fragmentTransaction.commit();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_passwords, container, false);

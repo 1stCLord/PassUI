@@ -6,6 +6,8 @@ import android.app.ActionBar;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,9 +19,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
+import android.view.ViewParent;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ratusapparatus.passssh.PassSSH;
@@ -103,5 +107,36 @@ public class PassUI extends Activity implements NavigationDrawerFragment.Navigat
     {
         DialogFragment newFragment = new AddPassDialog();
         newFragment.show(getFragmentManager(), "dialog");
+    }
+
+    public void showPasswordTextView(View view)
+    {
+        ViewParent viewParent = view.getParent().getParent();
+        if(viewParent instanceof LinearLayout) {
+            LinearLayout viewGroup = (LinearLayout)viewParent;
+            TextView textView = (TextView) viewGroup.findViewById(R.id.info_text);
+            if(textView != null)
+            {
+                String textID = textView.getText().toString();
+                String pass = passSSH.GetPass(textID);
+                textView.setText(pass);
+            }
+        }
+    }
+
+    public void copyPasswordTextView(View view)
+    {
+        ViewParent viewParent = view.getParent().getParent();
+        if(viewParent instanceof LinearLayout) {
+            LinearLayout viewGroup = (LinearLayout)viewParent;
+            TextView textView = (TextView) viewGroup.findViewById(R.id.info_text);
+            if(textView != null)
+            {
+                String textID = textView.getText().toString();
+                String pass = passSSH.GetPass(textID);
+                ClipboardManager clipboardManager = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
+                clipboardManager.setPrimaryClip(ClipData.newPlainText("",pass));
+            }
+        }
     }
 }

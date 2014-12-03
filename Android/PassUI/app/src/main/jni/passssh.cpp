@@ -48,6 +48,13 @@ jobjectArray vectorToList(JNIEnv * env, vector<string> &list)
 	return jlist;
 }
 
+string stripEndWhiteSpace(string input)
+{
+	size_t posStart = input.find_first_not_of(" \n\r");
+	size_t posEnd = input.find_last_not_of(" \n\r");
+	return input.substr(posStart,posEnd-posStart);
+}
+
 JNIEXPORT jlong JNICALL Java_com_ratusapparatus_passssh_PassSSH_Create(JNIEnv *, jobject)
 {
 	DPRINTF( "%s\n", __FUNCTION__ );
@@ -73,10 +80,14 @@ JNIEXPORT jobjectArray JNICALL Java_com_ratusapparatus_passssh_PassSSH_GetPassID
 	return vectorToList(env, passIDs);
 }
 
-JNIEXPORT jstring JNICALL Java_com_ratusapparatus_passssh_PassSSH_GetPass(JNIEnv *env, jobject obj, jstring)
+JNIEXPORT jstring JNICALL Java_com_ratusapparatus_passssh_PassSSH_GetPass(JNIEnv *env, jobject obj, jstring jid)
 {
 	DPRINTF( "%s\n", __FUNCTION__ );
 	PassSSH *passSSH = ptr<PassSSH>(env, obj);
+	string id = env->GetStringUTFChars(jid, JNI_FALSE);
+	string pass = passSSH->GetPass(id);
+	pass = stripEndWhiteSpace(pass);
+	return env->NewStringUTF(pass.c_str());
 }
 
 JNIEXPORT void JNICALL Java_com_ratusapparatus_passssh_PassSSH_InsertPass(JNIEnv *env, jobject obj, jstring, jstring)

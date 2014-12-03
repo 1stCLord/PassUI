@@ -31,9 +31,12 @@ private:
 	string m_username;
 	wstring m_passphrase;
 	
+	int m_socket;
 	LIBSSH2_CHANNEL *m_channel;
+	LIBSSH2_SESSION *m_session;
 	
 	void SessionStart();
+	void SessionStop();
 	void ShellStart();
 	vector<string> ReadShell();
 	
