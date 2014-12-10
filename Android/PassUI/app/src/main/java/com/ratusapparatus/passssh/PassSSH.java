@@ -31,7 +31,7 @@ public class PassSSH
 
     //Fetch
     public native String[] GetPassIDs();
-    public native String GetPass(String id);
+    public native String GetPass(String id, String gpg_password);
 
     //Set
     public native void InsertPass(String id, String pass);

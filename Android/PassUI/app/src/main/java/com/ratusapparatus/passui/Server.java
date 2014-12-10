@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ToggleButton;
 
 public class Server extends Fragment
 {
@@ -27,14 +28,17 @@ public class Server extends Fragment
         String username = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("Name", "");
         String password = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("Pass", "");
         String port = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("Port", "");
+        boolean keyAuth = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("KeyAuth", false);
         EditText addressEditText = (EditText)view.findViewById(R.id.addressEditText);
         EditText nameEditText = (EditText)view.findViewById(R.id.nameEditText);
         EditText passEditText = (EditText)view.findViewById(R.id.passEditText);
         EditText portEditText = (EditText)view.findViewById(R.id.portEditText);
+        ToggleButton keyAuthToggleButton = (ToggleButton)view.findViewById(R.id.keyAuthToggleButton);
         addressEditText.setText(server);
         nameEditText.setText(username);
         passEditText.setText(password);
         portEditText.setText(port);
+        keyAuthToggleButton.setChecked(keyAuth);
 
         return view;
    }
@@ -45,14 +49,17 @@ public class Server extends Fragment
         EditText nameEditText = (EditText)getView().findViewById(R.id.nameEditText);
         EditText passEditText = (EditText)getView().findViewById(R.id.passEditText);
         EditText portEditText = (EditText)getView().findViewById(R.id.portEditText);
+        ToggleButton keyAuthToggleButton = (ToggleButton)getView().findViewById(R.id.keyAuthToggleButton);
         String server = addressEditText.getText().toString();
         String username = nameEditText.getText().toString();
         String password = passEditText.getText().toString();
         String port = portEditText.getText().toString();
+        boolean keyAuth = keyAuthToggleButton.isChecked();
         PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putString("Server", server).commit();
         PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putString("Name", username).commit();
         PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putString("Pass", password).commit();
         PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putString("Port", port).commit();
+        PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putBoolean("KeyAuth", keyAuth).commit();
     }
 
 

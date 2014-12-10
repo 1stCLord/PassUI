@@ -3,12 +3,14 @@ package com.ratusapparatus.passui;
 import android.app.Activity;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -111,14 +113,40 @@ public class PassUI extends Activity implements NavigationDrawerFragment.Navigat
 
     public void showPasswordTextView(View view)
     {
+        final EditText input = new EditText(this);
+        final View srcView = view;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("");
+        builder.setMessage("");
+        builder.setView(input);
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int whichButton)
+            {
+                showPassword(srcView,input.getText().toString());
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Do nothing.
+            }
+        });
+        builder.show();
+    }
+
+    public void showPassword(View view, String gpg_password)
+    {
         ViewParent viewParent = view.getParent().getParent();
-        if(viewParent instanceof LinearLayout) {
+        if(viewParent instanceof LinearLayout)
+        {
             LinearLayout viewGroup = (LinearLayout)viewParent;
             TextView textView = (TextView) viewGroup.findViewById(R.id.info_text);
             if(textView != null)
             {
                 String textID = textView.getText().toString();
-                String pass = passSSH.GetPass(textID);
+                String pass = passSSH.GetPass(textID,gpg_password);
                 textView.setText(pass);
             }
         }
@@ -126,14 +154,40 @@ public class PassUI extends Activity implements NavigationDrawerFragment.Navigat
 
     public void copyPasswordTextView(View view)
     {
+        final EditText input = new EditText(this);
+        final View srcView = view;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("");
+        builder.setMessage("");
+        builder.setView(input);
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int whichButton)
+            {
+                copyPassword(srcView,input.getText().toString());
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Do nothing.
+            }
+        });
+        builder.show();
+    }
+
+    public void copyPassword(View view, String gpg_password)
+    {
         ViewParent viewParent = view.getParent().getParent();
-        if(viewParent instanceof LinearLayout) {
+        if(viewParent instanceof LinearLayout)
+        {
             LinearLayout viewGroup = (LinearLayout)viewParent;
             TextView textView = (TextView) viewGroup.findViewById(R.id.info_text);
             if(textView != null)
             {
                 String textID = textView.getText().toString();
-                String pass = passSSH.GetPass(textID);
+                String pass = passSSH.GetPass(textID,gpg_password);
                 ClipboardManager clipboardManager = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
                 clipboardManager.setPrimaryClip(ClipData.newPlainText("",pass));
             }

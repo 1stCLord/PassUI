@@ -80,12 +80,13 @@ JNIEXPORT jobjectArray JNICALL Java_com_ratusapparatus_passssh_PassSSH_GetPassID
 	return vectorToList(env, passIDs);
 }
 
-JNIEXPORT jstring JNICALL Java_com_ratusapparatus_passssh_PassSSH_GetPass(JNIEnv *env, jobject obj, jstring jid)
+JNIEXPORT jstring JNICALL Java_com_ratusapparatus_passssh_PassSSH_GetPass(JNIEnv *env, jobject obj, jstring jid, jstring jgpg_password)
 {
 	DPRINTF( "%s\n", __FUNCTION__ );
 	PassSSH *passSSH = ptr<PassSSH>(env, obj);
 	string id = env->GetStringUTFChars(jid, JNI_FALSE);
-	string pass = passSSH->GetPass(id);
+	string gpg_password = env->GetStringUTFChars(jgpg_password, JNI_FALSE);
+	string pass = passSSH->GetPass(id,gpg_password);
 	pass = stripEndWhiteSpace(pass);
 	return env->NewStringUTF(pass.c_str());
 }

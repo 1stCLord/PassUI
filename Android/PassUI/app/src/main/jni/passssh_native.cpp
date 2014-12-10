@@ -6,6 +6,11 @@
 #include <netdb.h>
 #include "passsshlog.h"
 
+/*int keyAuthCallback(LIBSSH2_SESSION *session, unsigned char **sig, size_t *sig_len,const unsigned char *data, size_t data_len, void **abstract)
+{
+	DPRINTF( "%s\n", __FUNCTION__ );
+}*/
+
 bool PassSSH::Init(string server, uint16_t port, string username, wstring passphrase, AuthType authType)
 {
 	DPRINTF( "%s\n", __FUNCTION__ );
@@ -46,14 +51,14 @@ vector<string> PassSSH::GetPassIDs()
 	return lines;
 }
 
-string PassSSH::GetPass(string id)
+string PassSSH::GetPass(string id, string gpg_password)
 {
 	DPRINTF( "%s\n", __FUNCTION__ );
 	SessionStart();
 	string pass_cmd = "pass " + id + " \n";
 	libssh2_channel_write(m_channel,pass_cmd.c_str(),pass_cmd.size());
 	ReadShell();
-	string keychain_password = "gIbrAltAr2\n";
+	string keychain_password = gpg_password + "\n";
 	libssh2_channel_write(m_channel,keychain_password.c_str(),keychain_password.size());
 	vector<string> pass = ReadShell();
 	SessionStop();
@@ -108,11 +113,54 @@ void PassSSH::SessionStart()
 	char *userauthlist = libssh2_userauth_list(m_session, m_username.c_str(), m_username.size());
 	
 	bool success = false;
-	/*if (strstr(userauthlist, "publickey") != NULL)
+	if (strstr(userauthlist, "publickey") != NULL && m_authType == AUTH_TYPE_PRIVATE_KEY)
 	{
-		libssh2_userauth_publickey(m_session, m_username.c_str(), password<unsigned char>().c_str(), m_passphrase.size(), NULL, NULL);
+		DPRINTF( "ATTEMPTING KEY BASED AUTH\n");
+		//libssh2_userauth_publickey(m_session, m_username.c_str(), password<unsigned char>().c_str(), m_passphrase.size(), &keyAuthCallback, NULL);
+		LIBSSH2_AGENT *agent = libssh2_agent_init(m_session);
+
+		if (!agent)
+			DPRINTF("Failure initializing ssh-agent support\n");
+
+		if (libssh2_agent_connect(agent))
+			DPRINTF("Failure connecting to ssh-agent\n");
+		if (libssh2_agent_list_identities(agent))
+			DPRINTF("Failure requesting identities to ssh-agent\n");
+		struct libssh2_agent_publickey *identity, *prev_identity = NULL;
+		int rc = 0;
+		while (1) 
+		{
+			rc = libssh2_agent_get_identity(agent, &identity, prev_identity);
+
+			if (rc == 1)
+				break;
+			if (rc < 0) 
+			{
+				rc = 1;
+				DPRINTF("Failure obtaining identity from ssh-agent support\n");
+				SessionStop();
+				return;
+			}
+			if (libssh2_agent_userauth(agent, m_username.c_str(), identity)) 
+			{
+				DPRINTF("\tAuthentication with username %s and public key %s failed!\n",m_username.c_str(), identity->comment);
+				SessionStop();
+				return;
+			}
+			else 
+			{
+				DPRINTF("\tAuthentication with username %s and public key %s succeeded!\n", m_username.c_str(), identity->comment);
+				break;
+			}
+			prev_identity = identity;
+		}
+		if (rc) 
+			DPRINTF("Couldn't continue authentication\n");
+ 
+		if (!(m_channel = libssh2_channel_open_session(m_session))) 
+			DPRINTF("Unable to open a session\n");
 	}
-    else */if (strstr(userauthlist, "password") != NULL)
+    else if (strstr(userauthlist, "password") != NULL)
 	{
 		DPRINTF( "ATTEMPTING PASSWORD AUTH\n");
 		string pwrd = password<char>();

@@ -34,10 +34,10 @@ JNIEXPORT jobjectArray JNICALL Java_com_ratusapparatus_passssh_PassSSH_GetPassID
 /*
  * Class:     com_ratusapparatus_passssh_PassSSH
  * Method:    GetPass
- * Signature: (Ljava/lang/String;)Ljava/lang/String;
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_com_ratusapparatus_passssh_PassSSH_GetPass
-  (JNIEnv *, jobject, jstring);
+  (JNIEnv *, jobject, jstring, jstring);
 
 /*
  * Class:     com_ratusapparatus_passssh_PassSSH

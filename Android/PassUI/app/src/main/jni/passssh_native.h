@@ -18,7 +18,7 @@ public:
 
     //Fetch
     vector<string> GetPassIDs();
-    string GetPass(string id);
+    string GetPass(string id, string gpg_password);
 
     //Set
     void InsertPass(string id, string pass);
