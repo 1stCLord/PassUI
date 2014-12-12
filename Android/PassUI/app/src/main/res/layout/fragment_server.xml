@@ -101,28 +101,6 @@
             android:textColor="@android:color/white"
             android:background="@color/themeTertiaryColour"
             android:padding="4dp"/>
-
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:measureWithLargestChild="false"
-            android:baselineAligned="false"
-            android:padding="4dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Key Based Authentication"
-                android:id="@+id/keyAuthTextView"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1" />
-
-            <ToggleButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New ToggleButton"
-                android:id="@+id/keyAuthToggleButton" />
-        </TableRow>
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -144,9 +122,39 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/passEditText"
-                android:inputType="text"
+                android:inputType="textPassword|text"
                 android:layout_weight="1"
                 android:textColor="@color/accent_material_light"/>
         </TableRow>
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:measureWithLargestChild="false"
+            android:baselineAligned="false"
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Key Based Authentication"
+                android:id="@+id/keyAuthTextView"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1" />
+
+            <ToggleButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New ToggleButton"
+                android:id="@+id/keyAuthToggleButton"
+                android:onClick="keyBasedAuthToggle" />
+        </TableRow>
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/privateKeyEditText"
+            android:inputType="text|textMultiLine"
+            android:layout_weight="1"
+            android:textColor="@color/accent_material_light"
+            android:visibility="gone" />
 
     </TableLayout>

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.SharedPreferences;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,12 +30,14 @@ public class Passwords extends Fragment
         FragmentManager fragmentManager = getActivity().getFragmentManager();
 
         PassUI passUI = (PassUI)getActivity();
-        String server = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("Server", "");
-        String username = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("Name", "");
-        String password = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("Pass", "");
-        String port = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("Port", "22");
-        boolean keyAuth = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("KeyAuth", false);
-        passUI.passSSH.Init(server,Integer.parseInt(port),username,password, keyAuth ? PassSSH.AuthType.AUTH_TYPE_PRIVATE_KEY : PassSSH.AuthType.AUTH_TYPE_PASSWORD);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String server   = preferences.getString("Server", "");
+        String username = preferences.getString("Name", "");
+        String password = preferences.getString("Pass", "");
+        String port     = preferences.getString("Port", "22");
+        boolean keyAuth = preferences.getBoolean("KeyAuth", false);
+        String key      = preferences.getString("Key", "");
+        passUI.passSSH.Init(server,Integer.parseInt(port),username,password, key, keyAuth ? PassSSH.AuthType.AUTH_TYPE_PRIVATE_KEY : PassSSH.AuthType.AUTH_TYPE_PASSWORD);
         String[] passIDs = passUI.passSSH.GetPassIDs();
         //passUI.passSSH.GetPass("");
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

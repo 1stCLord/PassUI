@@ -14,7 +14,7 @@ class PassSSH
 {
 public:
     //SSH details to use
-    bool Init(string server, uint16_t port, string username, wstring passphrase, AuthType authType);
+    bool Init(string server, uint16_t port, string username, wstring passphrase, wstring privatekey, AuthType authType);
 
     //Fetch
     vector<string> GetPassIDs();
@@ -30,6 +30,7 @@ private:
 	uint16_t m_port;
 	string m_username;
 	wstring m_passphrase;
+	wstring m_privatekey;
 	
 	int m_socket;
 	LIBSSH2_CHANNEL *m_channel;

@@ -1,6 +1,7 @@
 package com.ratusapparatus.passui;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -24,21 +25,26 @@ public class Server extends Fragment
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_server, container, false);
 
-        String server = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("Server", "");
-        String username = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("Name", "");
-        String password = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("Pass", "");
-        String port = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("Port", "");
-        boolean keyAuth = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("KeyAuth", false);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String server   =   preferences.getString("Server", "");
+        String username =   preferences.getString("Name", "");
+        String password =   preferences.getString("Pass", "");
+        String port     =   preferences.getString("Port", "");
+        boolean keyAuth =   preferences.getBoolean("KeyAuth", false);
+        String key      =   preferences.getString("Key", "");
         EditText addressEditText = (EditText)view.findViewById(R.id.addressEditText);
         EditText nameEditText = (EditText)view.findViewById(R.id.nameEditText);
         EditText passEditText = (EditText)view.findViewById(R.id.passEditText);
         EditText portEditText = (EditText)view.findViewById(R.id.portEditText);
         ToggleButton keyAuthToggleButton = (ToggleButton)view.findViewById(R.id.keyAuthToggleButton);
+        EditText keyEditText = (EditText)view.findViewById(R.id.privateKeyEditText);
         addressEditText.setText(server);
         nameEditText.setText(username);
         passEditText.setText(password);
         portEditText.setText(port);
         keyAuthToggleButton.setChecked(keyAuth);
+        keyEditText.setText(key);
+        keyEditText.setVisibility(keyAuth ? View.VISIBLE : View.GONE);
 
         return view;
    }
@@ -50,18 +56,22 @@ public class Server extends Fragment
         EditText passEditText = (EditText)getView().findViewById(R.id.passEditText);
         EditText portEditText = (EditText)getView().findViewById(R.id.portEditText);
         ToggleButton keyAuthToggleButton = (ToggleButton)getView().findViewById(R.id.keyAuthToggleButton);
+        EditText keyEditText = (EditText)getView().findViewById(R.id.privateKeyEditText);
         String server = addressEditText.getText().toString();
         String username = nameEditText.getText().toString();
         String password = passEditText.getText().toString();
         String port = portEditText.getText().toString();
         boolean keyAuth = keyAuthToggleButton.isChecked();
-        PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putString("Server", server).commit();
-        PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putString("Name", username).commit();
-        PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putString("Pass", password).commit();
-        PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putString("Port", port).commit();
-        PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putBoolean("KeyAuth", keyAuth).commit();
+        String key = keyEditText.getText().toString();
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
+        editor.putString("Server", server);
+        editor.putString("Name", username);
+        editor.putString("Pass", password);
+        editor.putString("Port", port);
+        editor.putBoolean("KeyAuth", keyAuth);
+        editor.putString("Key", key);
+        editor.commit();
     }
-
 
     public static Server newInstance()
     {

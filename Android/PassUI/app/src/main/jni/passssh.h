@@ -18,10 +18,10 @@ JNIEXPORT jlong JNICALL Java_com_ratusapparatus_passssh_PassSSH_Create
 /*
  * Class:     com_ratusapparatus_passssh_PassSSH
  * Method:    Init
- * Signature: (Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Lcom/ratusapparatus/passssh/PassSSH/AuthType;)Z
+ * Signature: (Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/ratusapparatus/passssh/PassSSH/AuthType;)Z
  */
 JNIEXPORT jboolean JNICALL Java_com_ratusapparatus_passssh_PassSSH_Init
-  (JNIEnv *, jobject, jstring, jint, jstring, jstring, jobject);
+  (JNIEnv *, jobject, jstring, jint, jstring, jstring, jstring, jobject);
 
 /*
  * Class:     com_ratusapparatus_passssh_PassSSH

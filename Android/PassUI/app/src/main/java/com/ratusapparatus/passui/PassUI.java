@@ -26,7 +26,9 @@ import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.ratusapparatus.passssh.PassSSH;
 
@@ -191,6 +193,18 @@ public class PassUI extends Activity implements NavigationDrawerFragment.Navigat
                 ClipboardManager clipboardManager = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
                 clipboardManager.setPrimaryClip(ClipData.newPlainText("",pass));
             }
+        }
+    }
+
+    public void keyBasedAuthToggle(View view)
+    {
+        ViewParent viewParent = view.getParent().getParent();
+        if(viewParent instanceof TableLayout && view instanceof ToggleButton)
+        {
+            TableLayout viewGroup = (TableLayout)viewParent;
+            ToggleButton toggleButton = (ToggleButton)view;
+            EditText editText = (EditText) viewGroup.findViewById(R.id.privateKeyEditText);
+            editText.setVisibility(toggleButton.isChecked() ? View.VISIBLE : View.GONE);
         }
     }
 }

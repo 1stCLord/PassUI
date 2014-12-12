@@ -6,17 +6,18 @@
 #include <netdb.h>
 #include "passsshlog.h"
 
-/*int keyAuthCallback(LIBSSH2_SESSION *session, unsigned char **sig, size_t *sig_len,const unsigned char *data, size_t data_len, void **abstract)
+int keyAuthCallback(LIBSSH2_SESSION *session, unsigned char **sig, size_t *sig_len,const unsigned char *data, size_t data_len, void **abstract)
 {
 	DPRINTF( "%s\n", __FUNCTION__ );
-}*/
+}
 
-bool PassSSH::Init(string server, uint16_t port, string username, wstring passphrase, AuthType authType)
+bool PassSSH::Init(string server, uint16_t port, string username, wstring passphrase, wstring privatekey, AuthType authType)
 {
 	DPRINTF( "%s\n", __FUNCTION__ );
 	m_server = server;
 	m_username = username;
 	m_passphrase = passphrase;
+	m_privatekey = privatekey;
 	m_authType = authType;
 	m_port = port;
 	
@@ -116,8 +117,8 @@ void PassSSH::SessionStart()
 	if (strstr(userauthlist, "publickey") != NULL && m_authType == AUTH_TYPE_PRIVATE_KEY)
 	{
 		DPRINTF( "ATTEMPTING KEY BASED AUTH\n");
-		//libssh2_userauth_publickey(m_session, m_username.c_str(), password<unsigned char>().c_str(), m_passphrase.size(), &keyAuthCallback, NULL);
-		LIBSSH2_AGENT *agent = libssh2_agent_init(m_session);
+		libssh2_userauth_publickey(m_session, m_username.c_str(), password<unsigned char>().c_str(), m_passphrase.size(), &keyAuthCallback, NULL);
+		/*LIBSSH2_AGENT *agent = libssh2_agent_init(m_session);
 
 		if (!agent)
 			DPRINTF("Failure initializing ssh-agent support\n");
@@ -158,7 +159,7 @@ void PassSSH::SessionStart()
 			DPRINTF("Couldn't continue authentication\n");
  
 		if (!(m_channel = libssh2_channel_open_session(m_session))) 
-			DPRINTF("Unable to open a session\n");
+			DPRINTF("Unable to open a session\n");*/
 	}
     else if (strstr(userauthlist, "password") != NULL)
 	{
