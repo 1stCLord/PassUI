@@ -1,0 +1,1 @@
+E:\ProgrammingTools\android-ndk-r10c\ndk-gdb-py.cmd --adb=E:/ProgrammingTools/android-sdk/platform-tools/adb.exe --nowait

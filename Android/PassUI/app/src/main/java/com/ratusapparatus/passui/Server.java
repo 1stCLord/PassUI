@@ -32,12 +32,14 @@ public class Server extends Fragment
         String port     =   preferences.getString("Port", "");
         boolean keyAuth =   preferences.getBoolean("KeyAuth", false);
         String key      =   preferences.getString("Key", "");
+        String pubkey      =   preferences.getString("PubKey", "");
         EditText addressEditText = (EditText)view.findViewById(R.id.addressEditText);
         EditText nameEditText = (EditText)view.findViewById(R.id.nameEditText);
         EditText passEditText = (EditText)view.findViewById(R.id.passEditText);
         EditText portEditText = (EditText)view.findViewById(R.id.portEditText);
         ToggleButton keyAuthToggleButton = (ToggleButton)view.findViewById(R.id.keyAuthToggleButton);
         EditText keyEditText = (EditText)view.findViewById(R.id.privateKeyEditText);
+        EditText pubkeyEditText = (EditText)view.findViewById(R.id.publicKeyEditText);
         addressEditText.setText(server);
         nameEditText.setText(username);
         passEditText.setText(password);
@@ -45,6 +47,8 @@ public class Server extends Fragment
         keyAuthToggleButton.setChecked(keyAuth);
         keyEditText.setText(key);
         keyEditText.setVisibility(keyAuth ? View.VISIBLE : View.GONE);
+        pubkeyEditText.setText(pubkey);
+        pubkeyEditText.setVisibility(keyAuth ? View.VISIBLE : View.GONE);
 
         return view;
    }
@@ -57,12 +61,14 @@ public class Server extends Fragment
         EditText portEditText = (EditText)getView().findViewById(R.id.portEditText);
         ToggleButton keyAuthToggleButton = (ToggleButton)getView().findViewById(R.id.keyAuthToggleButton);
         EditText keyEditText = (EditText)getView().findViewById(R.id.privateKeyEditText);
+        EditText pubkeyEditText = (EditText)getView().findViewById(R.id.publicKeyEditText);
         String server = addressEditText.getText().toString();
         String username = nameEditText.getText().toString();
         String password = passEditText.getText().toString();
         String port = portEditText.getText().toString();
         boolean keyAuth = keyAuthToggleButton.isChecked();
         String key = keyEditText.getText().toString();
+        String pubkey = pubkeyEditText.getText().toString();
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
         editor.putString("Server", server);
         editor.putString("Name", username);
@@ -70,6 +76,7 @@ public class Server extends Fragment
         editor.putString("Port", port);
         editor.putBoolean("KeyAuth", keyAuth);
         editor.putString("Key", key);
+        editor.putString("PubKey", pubkey);
         editor.commit();
     }
 

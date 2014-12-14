@@ -22,7 +22,7 @@ LOCAL_PATH := $(JNIPATH)
 include $(CLEAR_VARS)
 
 LOCAL_MODULE    := passssh
-LOCAL_SRC_FILES := passssh.cpp passssh_native.cpp
+LOCAL_SRC_FILES := passssh.cpp passssh_native.cpp encryptor.cpp
 LOCAL_STATIC_LIBRARIES := ssh2
 LOCAL_LDLIBS := -llog -lz
 include $(BUILD_SHARED_LIBRARY)

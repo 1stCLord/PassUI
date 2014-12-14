@@ -148,13 +148,28 @@
                 android:id="@+id/keyAuthToggleButton"
                 android:onClick="keyBasedAuthToggle" />
         </TableRow>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
         <EditText
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:id="@+id/privateKeyEditText"
             android:inputType="text|textMultiLine"
-            android:layout_weight="1"
             android:textColor="@color/accent_material_light"
-            android:visibility="gone" />
-
+            android:visibility="visible"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentTop="false"
+            android:layout_weight="1" />
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/publicKeyEditText"
+            android:inputType="text|textMultiLine"
+            android:textColor="@color/accent_material_light"
+            android:visibility="visible"
+            android:layout_alignParentBottom="false"
+            android:layout_weight="1" />
+        </LinearLayout>
     </TableLayout>

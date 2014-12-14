@@ -37,7 +37,8 @@ public class Passwords extends Fragment
         String port     = preferences.getString("Port", "22");
         boolean keyAuth = preferences.getBoolean("KeyAuth", false);
         String key      = preferences.getString("Key", "");
-        passUI.passSSH.Init(server,Integer.parseInt(port),username,password, key, keyAuth ? PassSSH.AuthType.AUTH_TYPE_PRIVATE_KEY : PassSSH.AuthType.AUTH_TYPE_PASSWORD);
+        String pubkey   = preferences.getString("PubKey", "");
+        passUI.passSSH.Init(server,Integer.parseInt(port),username,password, key, pubkey, keyAuth ? PassSSH.AuthType.AUTH_TYPE_PRIVATE_KEY : PassSSH.AuthType.AUTH_TYPE_PASSWORD);
         String[] passIDs = passUI.passSSH.GetPassIDs();
         //passUI.passSSH.GetPass("");
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

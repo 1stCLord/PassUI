@@ -61,15 +61,13 @@ JNIEXPORT jlong JNICALL Java_com_ratusapparatus_passssh_PassSSH_Create(JNIEnv *,
 	return (uintptr_t)new PassSSH();
 }
 
-JNIEXPORT jboolean JNICALL Java_com_ratusapparatus_passssh_PassSSH_Init(JNIEnv * env, jobject obj, jstring jserver, jint jport, jstring jusername, jstring jpassphrase, jobject jauthtype)
+JNIEXPORT jboolean JNICALL Java_com_ratusapparatus_passssh_PassSSH_Init(JNIEnv * env, jobject obj, jstring jserver, jint jport, jstring jusername, jstring jpassphrase, jstring jkey, jstring jpubkey, jobject jauthtype)
 {
 	DPRINTF( "%s\n", __FUNCTION__ );
 	jclass javaClass = env->GetObjectClass(jauthtype);
 	jmethodID authTypeOrdinal = env->GetMethodID(javaClass, "ordinal", "()I");	
 	PassSSH *passSSH = ptr<PassSSH>(env, obj);
-	wstring pass = JStringToWString(env,jpassphrase);
-	DPRINTF( "PASSPASSPASS:%ls\n", pass.c_str() );
-	return passSSH->Init(env->GetStringUTFChars(jserver, JNI_FALSE), jport, env->GetStringUTFChars(jusername, JNI_FALSE), pass, (AuthType)env->CallIntMethod(jauthtype, authTypeOrdinal));
+	return passSSH->Init(env->GetStringUTFChars(jserver, JNI_FALSE), jport, env->GetStringUTFChars(jusername, JNI_FALSE), env->GetStringUTFChars(jpassphrase,JNI_FALSE), env->GetStringUTFChars(jkey, JNI_FALSE), env->GetStringUTFChars(jpubkey, JNI_FALSE), (AuthType)env->CallIntMethod(jauthtype, authTypeOrdinal));
 }
 
 JNIEXPORT jobjectArray JNICALL Java_com_ratusapparatus_passssh_PassSSH_GetPassIDs(JNIEnv *env, jobject obj)

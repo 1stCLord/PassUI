@@ -205,6 +205,8 @@ public class PassUI extends Activity implements NavigationDrawerFragment.Navigat
             ToggleButton toggleButton = (ToggleButton)view;
             EditText editText = (EditText) viewGroup.findViewById(R.id.privateKeyEditText);
             editText.setVisibility(toggleButton.isChecked() ? View.VISIBLE : View.GONE);
+            EditText pubeditText = (EditText) viewGroup.findViewById(R.id.publicKeyEditText);
+            pubeditText.setVisibility(toggleButton.isChecked() ? View.VISIBLE : View.GONE);
         }
     }
 }

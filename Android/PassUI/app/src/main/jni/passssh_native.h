@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include "encryptor.h"
 #include "sshlib2/include/libssh2.h"
 using namespace std;
 
@@ -14,7 +15,7 @@ class PassSSH
 {
 public:
     //SSH details to use
-    bool Init(string server, uint16_t port, string username, wstring passphrase, wstring privatekey, AuthType authType);
+    bool Init(string server, uint16_t port, string username, string passphrase, string privatekey, string publickey, AuthType authType);
 
     //Fetch
     vector<string> GetPassIDs();
@@ -29,9 +30,12 @@ private:
 	string m_server;
 	uint16_t m_port;
 	string m_username;
-	wstring m_passphrase;
-	wstring m_privatekey;
+	string m_passphrase;
+	string m_privatekey;
+	string m_publickey;
 	
+	Encryptor *m_encryptor;
+		
 	int m_socket;
 	LIBSSH2_CHANNEL *m_channel;
 	LIBSSH2_SESSION *m_session;
@@ -40,7 +44,4 @@ private:
 	void SessionStop();
 	void ShellStart();
 	vector<string> ReadShell();
-	
-	template<typename T>
-	basic_string<T> password();
 };
