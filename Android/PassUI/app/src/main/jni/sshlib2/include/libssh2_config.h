@@ -11,17 +11,22 @@ typedef unsigned int uint32_t ;
 //typedef unsigned int socklen_t; /* missing in headers on VMS */
 
 /* Have's */
-#define HAVE_UNISTD_H
 #define HAVE_INTTYPES_H
-#define HAVE_SYS_TIME_H
-#define HAVE_SYS_UIO_H
 #define HAVE_SELECT
 #define HAVE_UIO
+
+#ifndef WIN32
+#define HAVE_UNISTD_H
+#define HAVE_SYS_TIME_H
+#define HAVE_SYS_UIO_H
 #define HAVE_GETTIMEOFDAY
 
 #define HAVE_SYS_SOCKET_H
 #define HAVE_NETINET_IN_H
 #define HAVE_ARPA_INET_H
+#else
+#define HAVE_DISABLED_NONBLOCKING
+#endif
 
 #define POSIX_C_SOURCE
 
@@ -31,8 +36,10 @@ typedef unsigned int uint32_t ;
 
 /* For selection of proper block/unblock function in session.c */
 
+#ifndef WIN32
 //#define HAVE_FIONBIO
 #define HAVE_O_NONBLOCK
+#endif
 
 //#include <stropts.h>
 
@@ -72,8 +79,9 @@ typedef unsigned int uint32_t ;
 /* Compile in zlib support. We link against gnv$libzshr, as available
  * on encompasserve.com.
  */
-
+#ifndef WIN32
 #define LIBSSH2_HAVE_ZLIB
+#endif
 
 /* Enable newer diffie-hellman-group-exchange-sha1 syntax */
 

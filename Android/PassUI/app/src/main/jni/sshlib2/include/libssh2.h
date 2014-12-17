@@ -90,6 +90,8 @@ extern "C" {
 #ifdef _WIN32
 # include <basetsd.h>
 # include <winsock2.h>
+#include <WS2tcpip.h>
+#define snprintf _snprintf
 #endif
 
 #include <stddef.h>

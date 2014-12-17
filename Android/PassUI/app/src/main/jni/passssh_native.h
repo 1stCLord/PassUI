@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <cstdint>
 #include "encryptor.h"
 #include "sshlib2/include/libssh2.h"
 using namespace std;

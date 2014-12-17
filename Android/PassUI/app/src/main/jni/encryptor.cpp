@@ -34,4 +34,5 @@ string Encryptor::Encrypt(const string &raw) const
 		DPRINTF( "encrypting\n" );
 		//TODO
 	}
+    return "";
 }

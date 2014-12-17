@@ -1,9 +1,14 @@
 #include "passssh_native.h"
 #include <cassert>
+#ifdef WIN32
+#include <winsock2.h>
+#else
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
+#define closesocket(x) close(x)
+#endif
 #include "passsshlog.h"
 
 int keyAuthCallback(LIBSSH2_SESSION *session, unsigned char **sig, size_t *sig_len,const unsigned char *data, size_t data_len, void **abstract)
@@ -11,6 +16,7 @@ int keyAuthCallback(LIBSSH2_SESSION *session, unsigned char **sig, size_t *sig_l
 	DPRINTF( "%s\n", __FUNCTION__ );
 	Encryptor *encryptor = (Encryptor *)*abstract;
 	string out_data = encryptor->Encrypt(string((char*)*sig,*sig_len));
+    return 0;
 }
 
 bool PassSSH::Init(string server, uint16_t port, string username, string passphrase, string privatekey, string publickey, AuthType authType)
@@ -121,6 +127,7 @@ void PassSSH::SessionStart()
 	if (strstr(userauthlist, "publickey") != NULL && m_authType == AUTH_TYPE_PRIVATE_KEY)
 	{
 		DPRINTF( "ATTEMPTING KEY BASED AUTH\n");
+		DPRINTF( "%s\n",m_publickey.c_str());
 		libssh2_userauth_publickey(m_session, m_username.c_str(), (unsigned char *)m_publickey.c_str(), m_publickey.size(), &keyAuthCallback, (void**)&m_encryptor);
 		char * bufferStart = NULL;
 		int bufferSize = 0;
@@ -169,7 +176,7 @@ void PassSSH::SessionStop()
 		
 	if(m_socket)
 	{
-		close(m_socket);
+		closesocket(m_socket);
 		m_socket = 0;
 	}
 }
