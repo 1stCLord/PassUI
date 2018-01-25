@@ -2,8 +2,6 @@
 #include <vector>
 #include <string>
 #include <cstdint>
-#include "encryptor.h"
-#include "sshlib2/include/libssh2.h"
 using namespace std;
 
 enum AuthType
@@ -34,12 +32,8 @@ private:
 	string m_passphrase;
 	string m_privatekey;
 	string m_publickey;
-	
-	Encryptor *m_encryptor;
 		
 	int m_socket;
-	LIBSSH2_CHANNEL *m_channel;
-	LIBSSH2_SESSION *m_session;
 	
 	void SessionStart();
 	void SessionStop();

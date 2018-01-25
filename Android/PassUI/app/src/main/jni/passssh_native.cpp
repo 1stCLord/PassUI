@@ -3,6 +3,7 @@
 #ifdef WIN32
 #include <winsock2.h>
 #else
+#include <unistd.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -10,14 +11,6 @@
 #define closesocket(x) close(x)
 #endif
 #include "passsshlog.h"
-
-int keyAuthCallback(LIBSSH2_SESSION *session, unsigned char **sig, size_t *sig_len,const unsigned char *data, size_t data_len, void **abstract)
-{
-	DPRINTF( "%s\n", __FUNCTION__ );
-	Encryptor *encryptor = (Encryptor *)*abstract;
-	string out_data = encryptor->Encrypt(string((char*)*sig,*sig_len));
-    return 0;
-}
 
 bool PassSSH::Init(string server, uint16_t port, string username, string passphrase, string privatekey, string publickey, AuthType authType)
 {
@@ -29,20 +22,20 @@ bool PassSSH::Init(string server, uint16_t port, string username, string passphr
 	m_publickey = publickey;
 	m_authType = authType;
 	m_port = port;
-	m_encryptor = new Encryptor(m_privatekey, m_passphrase);
 	
 	m_socket = 0;
-	m_channel = NULL;
+	/*m_channel = NULL;
 	m_session = NULL;
-	
-	return libssh2_init(0);
+
+	return libssh2_init(0);*/
+	return false;
 }
  
 vector<string> PassSSH::GetPassIDs()
 {
 	SessionStart();
 	const char * pass_cmd = "ls ~/.password-store/ -1\n";
-	libssh2_channel_write(m_channel,pass_cmd,strlen(pass_cmd));
+	//libssh2_channel_write(m_channel,pass_cmd,strlen(pass_cmd));
 	
 	vector<string> lines = ReadShell();
 	SessionStop();
@@ -67,10 +60,10 @@ string PassSSH::GetPass(string id, string gpg_password)
 	DPRINTF( "%s\n", __FUNCTION__ );
 	SessionStart();
 	string pass_cmd = "pass " + id + " \n";
-	libssh2_channel_write(m_channel,pass_cmd.c_str(),pass_cmd.size());
+	//libssh2_channel_write(m_channel,pass_cmd.c_str(),pass_cmd.size());
 	ReadShell();
 	string keychain_password = gpg_password + "\n";
-	libssh2_channel_write(m_channel,keychain_password.c_str(),keychain_password.size());
+	//libssh2_channel_write(m_channel,keychain_password.c_str(),keychain_password.size());
 	vector<string> pass = ReadShell();
 	SessionStop();
 	DPRINTF( "%s\n", pass[0].c_str() );
@@ -110,7 +103,7 @@ void PassSSH::SessionStart()
 		return;
 	}
  
-    m_session = libssh2_session_init();
+    /*m_session = libssh2_session_init();
 	libssh2_session_set_timeout(m_session, 2000);
 
     if (libssh2_session_handshake(m_session, m_socket))
@@ -156,12 +149,12 @@ void PassSSH::SessionStart()
 		}
 	}
 
-	DPRINTF( "%s end\n", __FUNCTION__ );
+	DPRINTF( "%s end\n", __FUNCTION__ );*/
 }
 
 void PassSSH::SessionStop()
 {
-	DPRINTF( "%s\n", __FUNCTION__ );
+	/*DPRINTF( "%s\n", __FUNCTION__ );
 	if(m_channel)
 	{
 		libssh2_channel_free(m_channel);
@@ -172,7 +165,7 @@ void PassSSH::SessionStop()
 		libssh2_session_disconnect(m_session, "Normal Shutdown");
 		libssh2_session_free(m_session);
 		m_session = NULL;
-	}
+	}*/
 		
 	if(m_socket)
 	{
@@ -183,8 +176,8 @@ void PassSSH::SessionStop()
 
 void PassSSH::ShellStart()
 {
-	libssh2_channel_request_pty(m_channel, "vanilla");
-	libssh2_channel_shell(m_channel);
+	//libssh2_channel_request_pty(m_channel, "vanilla");
+	//libssh2_channel_shell(m_channel);
 	ReadShell();
 }
 
@@ -196,8 +189,8 @@ vector<string> PassSSH::ReadShell()
 	char buffer[51];
 	do
 	{
-		memset(buffer,0,51);
-		size_t read_amount = libssh2_channel_read(m_channel, buffer, 50);
+		//memset(buffer,0,51);
+		size_t read_amount;// = libssh2_channel_read(m_channel, buffer, 50);
 		DPRINTF( "%s\n",buffer);
 		if(read_amount > 0 && read_amount <= 50)
 		{

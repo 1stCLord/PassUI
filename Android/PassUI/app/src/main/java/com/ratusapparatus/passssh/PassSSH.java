@@ -15,8 +15,8 @@ public class PassSSH
 
     public PassSSH()
     {
-        System.loadLibrary("sslcrypto");
-        System.loadLibrary("ssl");
+        //System.loadLibrary("sslcrypto");
+        //System.loadLibrary("ssl");
         System.loadLibrary("passssh");
         nativeObject = Create();
     }
