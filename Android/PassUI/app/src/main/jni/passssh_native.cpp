@@ -12,6 +12,15 @@
 #endif
 #include "passsshlog.h"
 
+void destroy_session(ssh_session session)
+{
+	if(session)
+	{
+		ssh_disconnect(session);
+		ssh_free(session);
+	}
+}
+
 bool PassSSH::Init(string server, uint16_t port, string username, string passphrase, string privatekey, string publickey, AuthType authType)
 {
 	DPRINTF( "%s\n", __FUNCTION__ );
@@ -23,12 +32,7 @@ bool PassSSH::Init(string server, uint16_t port, string username, string passphr
 	m_authType = authType;
 	m_port = port;
 	
-	m_socket = 0;
-	/*m_channel = NULL;
-	m_session = NULL;
-
-	return libssh2_init(0);*/
-	return false;
+	m_session = nullptr;
 }
  
 vector<string> PassSSH::GetPassIDs()
@@ -85,97 +89,35 @@ void PassSSH::GeneratePass(string id, bool withSymbols, int length)
 
 void PassSSH::SessionStart()
 {
-	DPRINTF( "%s\n", __FUNCTION__ );
-	SessionStop();
+	m_session = std::unique_ptr<ssh_session, decltype(&destroy_session)>(ssh_new(),destroy_session);
+
+	int verbosity = SSH_LOG_NOLOG;	
 	
-	struct sockaddr_in sin;
-    m_socket = socket(AF_INET, SOCK_STREAM, 0);
- 
-    sin.sin_family = AF_INET;
-    sin.sin_port = htons(m_port);
-	struct hostent *he = gethostbyname(m_server.c_str());
-    struct in_addr **addr_list = (struct in_addr **)he->h_addr_list;
-    sin.sin_addr.s_addr = inet_addr(inet_ntoa(*addr_list[0]));
-    if (connect(m_socket, (struct sockaddr*)(&sin),sizeof(struct sockaddr_in))) 
+	ssh_options_set(m_session.get(), SSH_OPTIONS_HOST, m_server.c_str());
+	ssh_options_set(m_session.get(), SSH_OPTIONS_LOG_VERBOSITY, &verbosity);
+	ssh_options_set(m_session.get(), SSH_OPTIONS_PORT, &m_port);
+	
+	if(ssh_connect(m_session.get()) != SSH_OK)
 	{
-		DPRINTF("failed to connect!\n");
 		SessionStop();
 		return;
 	}
- 
-    /*m_session = libssh2_session_init();
-	libssh2_session_set_timeout(m_session, 2000);
-
-    if (libssh2_session_handshake(m_session, m_socket))
-	{
-        DPRINTF("Failure establishing SSH session\n");
-		SessionStop();
-		return;
-	}
-		
-	const char *fingerprint = libssh2_hostkey_hash(m_session, LIBSSH2_HOSTKEY_HASH_SHA1);
-	char *userauthlist = libssh2_userauth_list(m_session, m_username.c_str(), m_username.size());
 	
-	bool success = false;
-	if (strstr(userauthlist, "publickey") != NULL && m_authType == AUTH_TYPE_PRIVATE_KEY)
-	{
-		DPRINTF( "ATTEMPTING KEY BASED AUTH\n");
-		DPRINTF( "%s\n",m_publickey.c_str());
-		libssh2_userauth_publickey(m_session, m_username.c_str(), (unsigned char *)m_publickey.c_str(), m_publickey.size(), &keyAuthCallback, (void**)&m_encryptor);
-		char * bufferStart = NULL;
-		int bufferSize = 0;
-		libssh2_session_last_error(m_session, &bufferStart, &bufferSize, 0);
-		DPRINTF("%s\n",bufferStart);
-		while(1){}
-	}
-    else if (strstr(userauthlist, "password") != NULL)
-	{
-		DPRINTF( "ATTEMPTING PASSWORD AUTH\n");
-		success = !libssh2_userauth_password(m_session, m_username.c_str(), m_passphrase.c_str());
-		 
-		 if(success)
-		 {
-			if ((m_channel = libssh2_channel_open_session(m_session))) 
-			{
-				DPRINTF( "CHANNEL CONNECTED\n");
-				ShellStart();
-			}
-		}
-		else
-		{
-			DPRINTF("Failure authenticating SSH session\n");
-			SessionStop();
-			return;
-		}
-	}
-
-	DPRINTF( "%s end\n", __FUNCTION__ );*/
+	static_assert(false, "get the key & check it");
+	const ssh_key key;
+	ssh_get_publickey_hash(key, SSH_PUBLICKEY_HASH_SHA1, );
+	
+	static_assert(false, "authenticate");
 }
 
 void PassSSH::SessionStop()
 {
-	/*DPRINTF( "%s\n", __FUNCTION__ );
-	if(m_channel)
-	{
-		libssh2_channel_free(m_channel);
-		m_channel = NULL;
-	}
-	if(m_session)
-	{
-		libssh2_session_disconnect(m_session, "Normal Shutdown");
-		libssh2_session_free(m_session);
-		m_session = NULL;
-	}*/
-		
-	if(m_socket)
-	{
-		closesocket(m_socket);
-		m_socket = 0;
-	}
+	m_session.reset();
 }
 
 void PassSSH::ShellStart()
 {
+	static_assert(false, "init channel");
 	//libssh2_channel_request_pty(m_channel, "vanilla");
 	//libssh2_channel_shell(m_channel);
 	ReadShell();

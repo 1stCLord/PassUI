@@ -2,6 +2,8 @@
 #include <vector>
 #include <string>
 #include <cstdint>
+#include <libssh/libssh.h> 
+
 using namespace std;
 
 enum AuthType
@@ -9,6 +11,8 @@ enum AuthType
 	AUTH_TYPE_PASSWORD,
 	AUTH_TYPE_PRIVATE_KEY
 };
+
+void destroy_session(ssh_session session);
 
 class PassSSH
 {
@@ -27,13 +31,14 @@ public:
 private:
 	AuthType m_authType;
 	string m_server;
-	uint16_t m_port;
+	uint32_t m_port;
 	string m_username;
 	string m_passphrase;
 	string m_privatekey;
 	string m_publickey;
-		
-	int m_socket;
+	
+	std::unique_ptr<ssh_session, decltype(&destroy_session)> m_session;
+	
 	
 	void SessionStart();
 	void SessionStop();
